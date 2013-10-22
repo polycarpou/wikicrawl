@@ -6,7 +6,7 @@ require 'ap'
 
 links = ["/wiki/Flatiron_District"]
 def get_wikis_only(links_array)
-  links_array.keep_if{|l| l=~ /^\/wiki\/[^"]+/}
+  links_array.keep_if{|l| l=~ /http:\/\/127.0.0.1:3000\/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2.+/}
 end
 
 def find_links(doc)
@@ -14,25 +14,11 @@ def find_links(doc)
 end
 
 def full_url(wiki_id)
-  "http://www.wikipedia.org#{wiki_id}"
+  "http://127.0.0.1/:8000#{wiki_id}"
 end
 
-def find_previous(path, point)
-  path.each do |connect|
-    return connect[1] if connect[0]==point
-  end
-end
-
-def backtrack(path, end_point)
-  point = end_point
-  short = []
-  until point == "start"
-    point = find_previous(path, point)
-    short << point
-  end
-  short
-end
-
+ap full_url("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html")
+ap Nokogiri::HTML(open("http://127.0.0.1/:3000/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html"))
 def neighbours(current)
   begin
     doc = Nokogiri::HTML(open(full_url(current)))
@@ -55,13 +41,13 @@ def bfs(start, looking_for)
   while !queueQ.empty? || setV.length < 1000
     t = queueQ.shift
     # if t is what we are looking for then
-    # if t == looking_for
-    #    puts "found what im looking for!"
-    #    binding.pry
-    #    #back_path =  backtrack(path, t)
-    #    #maze_path(g,back_path)
-    #    return t
-    # end
+    if t == looking_for
+       puts "found what im looking for!"
+       binding.pry
+       #back_path =  backtrack(path, t)
+       #maze_path(g,back_path)
+       return t
+    end
     p t
      # for all edges e in G.adjacentEdges(t) loop
     u = neighbours(t)
@@ -70,17 +56,10 @@ def bfs(start, looking_for)
         setV << node
         queueQ << node
         path << [node, t]
-        if node == looking_for
-          puts "found what im looking for!"
-          binding.pry
-          #back_path =  backtrack(path, t)
-          #maze_path(g,back_path)
-          return backtrack(path, node)[0..-2]
-        end
       end
     end
   end
 end
 
-#ap neighbours("/wiki/Flatiron_District")
-p bfs("/wiki/Charging_Bull", "/wiki/Polar_bear")
+ap neighbours("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html")
+#bfs("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html", "/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/Vincent_van_Gogh.html")
