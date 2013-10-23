@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+#require 'rest-open-uri'
 require 'pry'
 require 'pp'
 require 'ap'
@@ -14,11 +15,11 @@ def find_links(doc)
 end
 
 def full_url(wiki_id)
-  "http://127.0.0.1/:8000#{wiki_id}"
+  "http://192.168.2.105:8000#{wiki_id}"
 end
 
-ap full_url("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html")
-ap Nokogiri::HTML(open("http://127.0.0.1/:3000/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html"))
+#ap full_url("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html")
+#ap Nokogiri::HTML(open("http://127.0.0.1/:3000/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html"))
 def neighbours(current)
   begin
     doc = Nokogiri::HTML(open(full_url(current)))
@@ -60,6 +61,8 @@ def bfs(start, looking_for)
     end
   end
 end
-
-ap neighbours("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html")
+doc = Nokogiri::HTML(open("http://127.0.0.1:8000/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/Novel.html"))
+#doc = Nokogiri::HTML(open("http://www.imdb.com"))
+p doc
+#ap neighbours("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html")
 #bfs("/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/China.html", "/wikipedia_en_wp1_0.5_2000plus_03_2007_rc2/A/Vincent_van_Gogh.html")

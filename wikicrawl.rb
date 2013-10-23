@@ -75,7 +75,8 @@ def bfs(start, looking_for)
           binding.pry
           #back_path =  backtrack(path, t)
           #maze_path(g,back_path)
-          return backtrack(path, node)[0..-2]
+
+          return backtrack(path, node).unshift(looking_for)[0..-2]
         end
       end
     end
@@ -83,4 +84,4 @@ def bfs(start, looking_for)
 end
 
 #ap neighbours("/wiki/Flatiron_District")
-p bfs("/wiki/Charging_Bull", "/wiki/Polar_bear")
+p bfs("/wiki/Yukihiro_Matsumoto", "/wiki/Napolean")
