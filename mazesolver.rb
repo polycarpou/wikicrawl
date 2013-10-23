@@ -25,7 +25,8 @@ maze = [["█","█","█","█"," "," ","█","█","█"," "," "," ","█","�
 
       ]
 class MazeSolver
-  attr_accessor :maze
+  attr_accessor :maze, :path, :setV, :queueQ
+  
   def initialize(maze)
     @maze = maze
   end
@@ -49,85 +50,72 @@ class MazeSolver
     end
     for_print
   end
-  def find_previous(path, point)
+
+  def find_previous(point)
     path.each do |connect|
       return connect[1] if connect[0]==point
     end
   end
 
 
-  def backtrack(path, end_point)
+  def backtrack(end_point)
     point = end_point
     short = []
     until point == "start"
-      point = find_previous(path, point)
+      point = find_previous(point)
       short << point
     end
     short
-    
   end
-
 
   def blocked?(location)
     self.maze[location[0]][location[1]] == "█"? true : false
   end
 
   def neighbours(location)
-    x = location[0]
-    y = location[1]
-    output = []
-    output << [x-1,y]
-    output << [x+1,y]
-    output << [x,y+1]
-    output << [x,y-1]
+    x,y = location[0],location[1]
+    output = [[x-1,y],[x+1,y],[x,y+1],[x,y-1]]
     output.delete_if do |coordinates| 
-      x = coordinates[0]
-      y = coordinates[1]
+      x,y = coordinates[0],coordinates[1]
       x <0 || y <0 || x > maze.length-1 || y >maze[0].length-1 
     end
   end
 
+  def add_to_arrays(point, previous="start")
+    queueQ << point
+    setV << point
+    path << [point,previous]
+  end
+  
   def bfs (v,looking_for)
-    queueQ = []
-    setV = []
-    path = []
+    self.queueQ = []
+    self.setV = []
+    self.path = []
 
-    queueQ.push(v)
-    setV << v
-
-    path << [v,"start"]
+    add_to_arrays(v)
      
     while !queueQ.empty?
-        t = queueQ.shift
-        # if t is what we are looking for then
-        if maze[t[0]][t[1]] == looking_for
-           puts "found what im looking for!"
-           back_path =  backtrack(path, t)
-           maze_path(back_path)
-           return t
-        end
-         # for all edges e in G.adjacentEdges(t) loop
-        u = neighbours(t)
-        u.each do |coordinates|
-          if !setV.include?(coordinates) and !blocked?(coordinates)
-            setV << coordinates
-            queueQ << coordinates
-            path << [coordinates, t]
+      t = queueQ.shift
+      u = neighbours(t)
+      u.each do |coordinates|
+        if !setV.include?(coordinates) and !blocked?(coordinates)
+          add_to_arrays(coordinates,t)
+          if maze[coordinates[0]][coordinates[1]] == looking_for
+            puts "found what im looking for!"
+            back_path =  backtrack(coordinates)
+            maze_path(back_path)
+            return coordinates
           end
         end
+      end
     end
     puts "Could not find the gem =("
   end
 end
+
 new_maze = MazeSolver.new(maze)
 system("clear")
 new_maze.for_print
 sleep 5
 system("clear")
 new_maze.bfs([9,0],"*")
-
-#bfs(maze, [9,0],"*")
-
- #oracleofbacon.org/movielinks.php?a=Christopher+Walken&b=Charles+Chaplin&use_using=1&u0=on&use_genres=1&g0=on&g4=on&g8=on&g16=on&g20=on&g1=on&g5=on&g9=on&g13=on&g17=on&g21=on&g25=on&g2=on&g6=on&g10=on&g14=on&g22=on&g26=on&g3=on&g11=on&g15=on&g23=on&g27=on
-
-
