@@ -1,7 +1,4 @@
 
-require 'pp'
-require 'ap'
-
 maze = [["█","█","█","█"," "," ","█","█","█"," "," "," ","█","█"," "," "," "," ","█"," ","█","█","█","█"," "," ","█","█","█"," "," "," "," "," "," ","█","█"," ","█"," "],
         ["█","█","█","█"," "," ","█","█"," "," ","█"," "," "," "," "," ","█"," "," "," ","█","█","█","█"," "," ","█"," "," "," "," "," ","█","█"," "," ","█","█","█"," "],
         ["█"," "," "," "," "," ","█"," "," ","█","█","█","█","█"," "," ","█","█","█"," ","█","█","█","█"," "," ","█"," ","█"," ","█","█","█","█"," "," "," "," "," "," "],
@@ -22,10 +19,10 @@ maze = [["█","█","█","█"," "," ","█","█","█"," "," "," ","█","�
         ["█"," "," ","█","█"," "," "," ","█","█","█","█","█","█"," "," "," "," ","█"," "," "," ","█","█"," "," ","█","█","█"," "," "," ","█","█"," "," "," "," ","█"," "],
         ["█","█"," ","█","█","█","█"," "," "," ","█","█","█","█","█"," ","█","█","█","█","█","█","█","█"," "," ","█","█","█"," "," "," ","█"," "," "," "," ","█","█"," "],
         [" "," "," ","█"," "," ","█","█","█","█","█","█","█","█","█","█","█","█","█"," ","█","█","█","█"," "," ","█"," "," "," "," "," "," "," "," "," "," "," "," "," "]
-
       ]
+
 class MazeSolver
-  attr_accessor :maze, :path, :setV, :queueQ
+  attr_accessor :maze, :path, :set, :queue
   
   def initialize(maze)
     @maze = maze
@@ -82,29 +79,33 @@ class MazeSolver
   end
 
   def add_to_arrays(point, previous="start")
-    queueQ << point
-    setV << point
+    queue << point
+    set << point
     path << [point,previous]
   end
   
-  def bfs (v,looking_for)
-    self.queueQ = []
-    self.setV = []
+  def setup_arrays
+    self.queue = []
+    self.set = []
     self.path = []
+  end
 
+  def display_backtrack(back_path)
+    maze_path(back_path)
+  end
+
+  def bfs (v,looking_for)
+    setup_arrays
     add_to_arrays(v)
-     
-    while !queueQ.empty?
-      t = queueQ.shift
-      u = neighbours(t)
-      u.each do |coordinates|
-        if !setV.include?(coordinates) and !blocked?(coordinates)
-          add_to_arrays(coordinates,t)
-          if maze[coordinates[0]][coordinates[1]] == looking_for
-            puts "found what im looking for!"
-            back_path =  backtrack(coordinates)
-            maze_path(back_path)
-            return coordinates
+    while !queue.empty?
+      t = queue.shift
+      neighbours(t).each do |node|
+        if !set.include?(node) and !blocked?(node)
+          add_to_arrays(node,t)
+          if maze[node[0]][node[1]] == looking_for
+            puts "Found what I was looking for!"
+            display_backtrack(backtrack(node))
+            return node
           end
         end
       end

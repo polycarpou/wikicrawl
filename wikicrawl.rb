@@ -48,10 +48,8 @@ def bfs(start, looking_for)
 
   queueQ.push(start)
   setV << start
-  count = 0
   path = []
   path << [start,"start"]
-     # while Q is not empty loop
   while !queueQ.empty? || setV.length < 1000
     t = queueQ.shift
     # if t is what we are looking for then
@@ -84,4 +82,4 @@ def bfs(start, looking_for)
 end
 
 #ap neighbours("/wiki/Flatiron_District")
-p bfs("/wiki/Yukihiro_Matsumoto", "/wiki/Napolean")
+p bfs("/wiki/Charging_Bull", "/wiki/Nicosia")
