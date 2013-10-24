@@ -76,5 +76,7 @@ class WikiCrawl
   end
 end
 new_crawl = WikiCrawl.new
-new_crawl.bfs("/wiki/Charging_Bull", "/wiki/Nicosia")
-puts "I processed #{new_crawl.set.count} wikipedia links."
+#new_crawl.bfs("/wiki/Charging_Bull", "/wiki/Cyprus")
+new_crawl.bfs("/wiki/Charging_Bull", "/wiki/Polar_bear")
+
+puts "I processed #{new_crawl.set.count} wikipedia links to find this path."
