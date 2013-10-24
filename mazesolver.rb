@@ -54,7 +54,6 @@ class MazeSolver
     end
   end
 
-
   def backtrack(end_point)
     point = end_point
     short = []
@@ -83,7 +82,7 @@ class MazeSolver
     set << point
     path << [point,previous]
   end
-  
+
   def setup_arrays
     self.queue = []
     self.set = []
@@ -94,14 +93,14 @@ class MazeSolver
     maze_path(back_path)
   end
 
-  def bfs (start,looking_for)
+  def bfs(start, looking_for)
     setup_arrays
     add_to_arrays(start)
     while !queue.empty?
       t = queue.shift
       neighbours(t).each do |node|
         if !set.include?(node) and !blocked?(node)
-          add_to_arrays(node,t)
+          add_to_arrays(node, t)
           if maze[node[0]][node[1]] == looking_for
             puts "Found what I was looking for!"
             display_backtrack(backtrack(node))
