@@ -65,14 +65,14 @@ class MazeSolver
   end
 
   def blocked?(location)
-    self.maze[location[0]][location[1]] == "█"? true : false
+    self.maze[location[1]][location[0]] == "█"? true : false
   end
 
   def neighbours(location)
     x,y = location[0],location[1]
     output = [[x-1,y],[x+1,y],[x,y+1],[x,y-1]]
     output.delete_if do |coordinates| 
-      x,y = coordinates[0],coordinates[1]
+      y,x = coordinates[0],coordinates[1]
       x <0 || y <0 || x > maze.length-1 || y >maze[0].length-1 
     end
   end
@@ -101,15 +101,15 @@ class MazeSolver
       neighbours(t).each do |node|
         if !set.include?(node) and !blocked?(node)
           add_to_arrays(node, t)
-          if maze[node[0]][node[1]] == looking_for
-            puts "Found what I was looking for!"
-            display_backtrack(backtrack(node))
-            return node
+          if maze[node[1]][node[0]] == looking_for
+      #      puts "Found what I was looking for!"
+      #      display_backtrack(backtrack(node))
+            return backtrack(node).reverse.reject{|x| x== 'start'}
           end
         end
       end
     end
-    puts "I've got 99 problems but a ♥ aint one."
+    #puts "I've got 99 problems but a ♥ aint one."
   end
 end
 
