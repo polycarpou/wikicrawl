@@ -104,7 +104,7 @@ class MazeSolver
           if maze[node[0]][node[1]] == looking_for
             puts "Found what I was looking for!"
             display_backtrack(backtrack(node))
-            return node
+            return backtrack(node)
           end
         end
       end

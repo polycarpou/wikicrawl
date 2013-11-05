@@ -42,7 +42,7 @@ class MazeSolver
       unless point == "start"
         x = point[0]
         y = point[1]
-        self.maze[x][y] = "o"
+        self.maze[y][x] = "o"
       end
     end
     for_print
@@ -102,21 +102,18 @@ class MazeSolver
         if !set.include?(node) and !blocked?(node)
           add_to_arrays(node, t)
           if maze[node[1]][node[0]] == looking_for
-      #      puts "Found what I was looking for!"
-      #      display_backtrack(backtrack(node))
+            #display_backtrack(backtrack(node))
             return backtrack(node).reverse.reject{|x| x== 'start'}
           end
         end
       end
     end
-    #puts "I've got 99 problems but a ♥ aint one."
   end
 end
-
-# new_maze = MazeSolver.new(maze)
-# system("clear")
-# new_maze.for_print
-# puts "Press Enter to Solve Maze!"
-# gets
-# system("clear")
-# new_maze.bfs([9,0],"♥")
+ # new_maze = MazeSolver.new(maze)
+ # system("clear")
+ # new_maze.for_print
+ # puts "Press Enter to Solve Maze!"
+ # gets
+ # system("clear")
+ # new_maze.bfs([9,0],"♥")
