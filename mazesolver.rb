@@ -116,6 +116,7 @@ end
 new_maze = MazeSolver.new(maze)
 system("clear")
 new_maze.for_print
+puts "Press Enter to Solve Maze!"
 gets
 system("clear")
 new_maze.bfs([9,0],"♥")
