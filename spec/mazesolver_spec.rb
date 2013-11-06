@@ -1,5 +1,5 @@
 require_relative 'spec_helper.rb'
-require_relative '../mazesolver.rb'
+require_relative 'mazesolver.rb'
 
 
 small_maze = [
@@ -18,28 +18,6 @@ describe MazeSolver do
     end
   end
     
-  context "#neighbours(node)" do
-	  it "should return all neighbours (coordinates above, below, left and right of input)" do
-	   new_maze.neighbours([2,2]).sort.should == [[2,1],[1,2],[2,3],[3,2]].sort
-     new_maze.neighbours([2,2]).count.should == 4
-	  end
-
-    it "should only return neighbours that are in the maze boundary" do
-     new_maze.neighbours([0,2]).sort.should == [[1,2],[0,3],[0,1]].sort
-     new_maze.neighbours([0,2]).count.should == 3
-
-     new_maze.neighbours([4,4]).sort.should == [[3,4],[4,3]].sort
-     new_maze.neighbours([4,4]).count.should == 2
-    end
-  end
-
-  context "#blocked?(node)" do
-    it "returns true if coordinate contains a '█' else false" do
-      new_maze.blocked?([1,1]).should eq(false)
-      new_maze.blocked?([2,2]).should eq(true)
-    end
-  end
-
   context "#setup_arrays" do
     it "the backpath, visited set and the queue should all be set to []" do
       new_maze.setup_arrays
@@ -73,6 +51,28 @@ describe MazeSolver do
       new_maze.path.should == [[[2,1],'start'], [[1,1],[2,1]], [[0,1],[1,1]]]
       new_maze.set.should == [[2,1], [1,1], [0,1]]
       new_maze.queue.should == [[2,1], [1,1], [0,1]] 
+    end
+  end
+
+  context "#neighbours(node)" do
+	  it "should return all neighbours (coordinates above, below, left and right of input)" do
+	   new_maze.neighbours([2,2]).sort.should == [[2,1],[1,2],[2,3],[3,2]].sort
+     new_maze.neighbours([2,2]).count.should == 4
+	  end
+
+    it "should only return neighbours that are in the maze boundary" do
+     new_maze.neighbours([0,2]).sort.should == [[1,2],[0,3],[0,1]].sort
+     new_maze.neighbours([0,2]).count.should == 3
+
+     new_maze.neighbours([4,4]).sort.should == [[3,4],[4,3]].sort
+     new_maze.neighbours([4,4]).count.should == 2
+    end
+  end
+
+  context "#blocked?(node)" do
+    it "returns true if coordinate contains a '█' else false" do
+      new_maze.blocked?([1,1]).should eq(false)
+      new_maze.blocked?([2,2]).should eq(true)
     end
   end
 
